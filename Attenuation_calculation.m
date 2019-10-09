@@ -1,3 +1,5 @@
+% Use this file to calculate the total attenuation
+
 frequency = 2.4; %GHz
 altitude = 0; %km
 elevation_angle = 60; %degrees
