@@ -7,9 +7,9 @@ function [permittivity, refractive_index] = permittivity_model(altitude)
 %   Input units are km.
 
 psi = 167; %cm^3/kg
-density = density_model(altitude); %kg/m^3 (the paper said something about mols so I'm confused)
+density = density_model(altitude)/1000000; %kg/cm^3 (the paper said something about mols so I'm confused)
 
-permittivity = (1 + 2*density*psi)/(1 - density*psi);
+permittivity = 1 + 3*density*psi + 3*density^2*psi^2; %(1 + 2*density*psi)/(1 - density*psi);
 
 refractive_index = sqrt(permittivity);
 
