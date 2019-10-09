@@ -5,6 +5,9 @@ function temp = temp_model(altitude)
 %
 %   Output units are K.
 %   Input units are km.
+%
+%   Also the output from these could use a little tweaking, since the
+%   derivatives aren't as smooth as they should be
 
 data = load('temp_vs_alt.mat');
 

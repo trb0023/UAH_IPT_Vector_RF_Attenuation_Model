@@ -6,9 +6,7 @@ attenuation_vals = [];
 freq = 2.4;
 
 for h = h_vals
-    pressure = 0.1*pressure_model(h); % convert from mBar to kPa
-    temperature = temp_model(h);
-    attenuation = attenuation_total(freq, pressure, temp_model(h), h);
+    attenuation = attenuation_total(freq, h);
     attenuation_vals = [attenuation_vals attenuation];
 end
 
@@ -37,3 +35,19 @@ subplot(1,2,1);
 plot((permittivity_vals(ix:end)-1)*1000, h_vals(ix:end))
 xlim([0 5])
 ylim([0 70])
+
+%% Local Radius Test
+
+h_vals = linspace(0, 100, 101);
+radius_vals = [];
+threshold_vals = [];
+
+
+for h = h_vals
+    radius_vals = [radius_vals local_radius_calc(h, 90)/1e6];
+    threshold_vals = [threshold_vals (h+6051.8)/1e6];
+end
+
+plot(h_vals, radius_vals, "r", h_vals, threshold_vals, "b:");
+set(gca, 'YScale', 'log');
+

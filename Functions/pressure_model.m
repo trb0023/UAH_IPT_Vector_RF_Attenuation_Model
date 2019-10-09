@@ -5,6 +5,9 @@ function pressure = pressure_model(altitude)
 %
 %   Output units are mBar.
 %   Input units are km.
+%
+%   Also the output from these could use a little tweaking, since the
+%   derivatives aren't as smooth as they should be
 
 data = load('pres_vs_alt.mat');
 
