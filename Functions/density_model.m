@@ -1,6 +1,6 @@
 function density = density_model(altitude)
 %DENSITY_MODEL  Gives density as a function of altitude for Venus.
-%   Use the grabbed empirical model to calculate the density vs altitude
+%   Use a model to calculate the density vs altitude
 %   via interpolation.
 %
 %   Output units are kg/m^3.
