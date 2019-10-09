@@ -28,8 +28,8 @@ for h = h_vals
 end
 
 alpha_total = trapz(L_vals, alpha_vals);
-alpha_total = alpha_total * (0.51/0.36) %Approximate correction for defocusing
+alpha_total = alpha_total * (0.51/0.36); %Approximate correction for defocusing
 
-L_total = L_vals(end)
+L_total = L_vals(end);
 
 end
