@@ -1,9 +1,15 @@
 % Use this file to calculate the total attenuation
 
-frequency = 2.4; %GHz
+
+frequency = 3; %GHz
 altitude = 0; %km
 elevation_angle = 60; %degrees
 altitude_of_orbiter = 1000; %km
+lander_gain = 1.5;
+orbiter_gain = 10;
+transmit_power = 5; % Watts
+noise_temperature = 80; %K
+
 
 R_v = 6.0518e3; % Radius of Venus in kilometers
 
@@ -17,5 +23,8 @@ fspl = 20*log10(L) + 20*log10(frequency) + 92.45;
 
 disp("Attenuation from atmospheric absorbtion:");
 disp("    " + attenuation + " dB");
+disp("Attenuation from path loss");
+disp("    " + fspl + " dB");
 disp("Total Attenuation:");
 disp("    " + (attenuation+fspl) + " dB");
+
