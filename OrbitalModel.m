@@ -18,10 +18,10 @@ misclosses = 3+2.5+2; % dB
 
 maximum_link_angle = 75; %deg
 
-orbiterApoapsis = 250; % km
+orbiterApoapsis = 500; % km
 orbiterPeriapsis = 250; % km
 
-deltaLongitudeAngle = 0; % degrees (Angle from lander position to periapsis position, perpendicular to the path of the orbit)
+deltaLongitudeAngle = 180; % degrees (Angle from lander position to periapsis position, perpendicular to the path of the orbit)
 deltaArgumentOfPeriapsisAngleDeg = 0; % degrees (Angle from lander position to periapsis position, along the path of the orbit.
 % 0 Means the periapsis happens as close as possible to the lander, 180 means the apoapsis is above the lander)
 
@@ -132,15 +132,22 @@ title("Orbiter Path")
 dt = tRange(2)-tRange(1);
 fullTRange = linspace(0,OrbitalPeriod*orbits,totalPoints);
 
+totalInCommsPoints = length(AltitudeLink)*orbits;
+
 data_rates = [];
 total_data = 0;
 
+eval_counts = 0;
+
 for i = 0:totalPoints-1
-    
     i2 = mod(i,orbitPoints)+1;
     
     if(InCommsRange(i2))
         max_data_rate = total_link_calc(frequency, max_bandwidth_percent, lander_altitude, ElevationAngleRange(i2), (AltitudeRange(i2)-VenusRadius)/1000, lander_gain, orbiter_gain, transmit_power, noise_temperature, Eb_No, code_rate, misclosses);
+        
+        eval_counts = eval_counts + 1;
+        done_percent = (eval_counts/totalInCommsPoints)*100;
+        disp("Progress: " + done_percent + "%")
     else
         max_data_rate = 0;
     end
@@ -148,6 +155,8 @@ for i = 0:totalPoints-1
     total_data = total_data + max_data_rate*dt;
     
     data_rates = [data_rates max_data_rate];
+    
+    
 end
 
 OrbitalPeriod

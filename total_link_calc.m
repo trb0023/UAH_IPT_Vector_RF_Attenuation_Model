@@ -21,6 +21,11 @@ R_v = 6.0518e3; % Radius of Venus in kilometers
 
 max_bandwidth = frequency*max_bandwidth_percent*2*1000; % MHz
 
+%Can't deal with zero, so set the elevation to a really tiny number
+if(elevation_angle == 0)
+    elevation_angle = 0.000000001;
+end
+
 [~, attenuation] = approx_straight_ray_path_integration(altitude, elevation_angle, frequency);
 
 B = rad2deg(asin((R_v + altitude)*sin(deg2rad(180-elevation_angle))/(R_v+altitude_of_orbiter)));

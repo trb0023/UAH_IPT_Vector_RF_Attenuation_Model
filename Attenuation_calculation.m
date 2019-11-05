@@ -5,8 +5,8 @@ frequency = 1; %GHz
 max_bandwidth_percent = 0.05;
 
 altitude = 0; %km
-elevation_angle = 60; %degrees
-altitudes_of_orbiter = linspace(250, 10000, 100); %km
+elevation_angle = 0; %degrees
+altitudes_of_orbiter = linspace(250, 10000, 10); %km
 %altitude_of_orbiter = 250; %km
 lander_gain = 1.5; %dB
 orbiter_gain = 10; % dB
