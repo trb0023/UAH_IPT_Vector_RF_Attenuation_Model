@@ -122,7 +122,7 @@ p2 = polar(TrueAnomalyNoLink,AltitudeNoLink,"bo");
 p2.MarkerSize = 1/2;
 axis equal
 if ~isempty(AltitudeLink)
-    legend("Venus", "Lander", "Sat Orbit (No Link)", "Sat Orbit (Link)", 'Location','best');
+    legend("Venus", "Lander", "Sat Orbit (Link)", "Sat Orbit (No Link)", 'Location','best');
 else
     legend("Venus", "Lander", "Sat Orbit (No Link)", 'Location','best');
 end
