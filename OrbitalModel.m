@@ -26,7 +26,7 @@ deltaArgumentOfPeriapsisAngleDeg = 0; % degrees (Angle from lander position to p
 % 0 Means the periapsis happens as close as possible to the lander, 180 means the apoapsis is above the lander)
 
 
-orbitPoints = 300; % Number of points in an orbit
+orbitPoints = 500; % Number of points in an orbit
 orbits = 1; % Number of orbits
 totalPoints = orbitPoints*orbits; % Total number of points
 
@@ -160,9 +160,10 @@ for i = 0:totalPoints-1
 end
 
 OrbitalPeriod
-data_transmitted = total_data
-data_transmitted_per_orbit = total_data/orbits
-average_rate = total_data/(OrbitalPeriod*orbits)
+data_transmitted = total_data %Mbit
+data_transmitted_per_orbit = total_data/orbits %Mbit per orbit
+average_rate = total_data/(OrbitalPeriod*orbits) %Mbit per second
+peak_rate = max(data_rates) %Mbit per second
 
 ax3 = subplot(2,1,2);
 plot(fullTRange,data_rates);
