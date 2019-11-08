@@ -1,3 +1,7 @@
+function a = OrbitalModel
+format longg
+format compact
+
 % ******* Start Config Constants *******
 
 VenusRadius = 6.0518e6; % m Radius of Venus
@@ -16,7 +20,7 @@ Eb_No = 1.05; % dB
 code_rate = 0.5; % idk
 misclosses = 3+2.5+2; % dB
 
-maximum_link_angle = 75; %deg
+maximum_link_angle = 85; %deg
 
 orbiterApoapsis = 500; % km
 orbiterPeriapsis = 250; % km
@@ -27,8 +31,8 @@ deltaArgumentOfPeriapsisAngleDeg = 0; % degrees (Angle from lander position to p
 
 
 orbitPoints = 500; % Number of points in an orbit
-orbits = 1; % Number of orbits
-totalPoints = orbitPoints*orbits; % Total number of points
+orbits = 10; % Number of orbits
+totalPoints = orbitPoints; % Total number of points
 
 % ******* End Config Variables *******
 
@@ -130,24 +134,28 @@ title("Orbiter Path")
 
 
 dt = tRange(2)-tRange(1);
-fullTRange = linspace(0,OrbitalPeriod*orbits,totalPoints);
+fullTRange = linspace(0,OrbitalPeriod,totalPoints);
 
-totalInCommsPoints = length(AltitudeLink)*orbits;
+totalInCommsPoints = length(AltitudeLink);
 
 data_rates = [];
 total_data = 0;
 
-eval_counts = 0;
 
-for i = 0:totalPoints-1
+D = parallel.pool.DataQueue;
+afterEach(D, @nUpdateWait);
+
+N = totalInCommsPoints;
+p = 1;
+
+tic
+for (i = 0:totalPoints-1)
     i2 = mod(i,orbitPoints)+1;
     
     if(InCommsRange(i2))
         max_data_rate = total_link_calc(frequency, max_bandwidth_percent, lander_altitude, ElevationAngleRange(i2), (AltitudeRange(i2)-VenusRadius)/1000, lander_gain, orbiter_gain, transmit_power, noise_temperature, Eb_No, code_rate, misclosses);
         
-        eval_counts = eval_counts + 1;
-        done_percent = (eval_counts/totalInCommsPoints)*100;
-        disp("Progress: " + done_percent + "%")
+        send(D, i);
     else
         max_data_rate = 0;
     end
@@ -155,18 +163,25 @@ for i = 0:totalPoints-1
     total_data = total_data + max_data_rate*dt;
     
     data_rates = [data_rates max_data_rate];
-    
-    
 end
+toc
 
 OrbitalPeriod
-data_transmitted = total_data %Mbit
-data_transmitted_per_orbit = total_data/orbits %Mbit per orbit
-average_rate = total_data/(OrbitalPeriod*orbits) %Mbit per second
+data_transmitted = total_data*orbits %Mbit
+data_transmitted_per_orbit = total_data %Mbit per orbit
+average_rate = total_data/(OrbitalPeriod) %Mbit per second
 peak_rate = max(data_rates) %Mbit per second
+disp("Percentage of time with link: "+(totalInCommsPoints/totalPoints)*100+"%")
 
 ax3 = subplot(2,1,2);
 plot(fullTRange,data_rates);
 title("Data Rate vs Time");
 xlabel("Time (s)");
 ylabel("Data Rate (Mb/s)");
+
+    function nUpdateWait(~)
+        disp("Progress: " + p/N*100 + "%")
+        p = p + 1;
+    end
+
+end

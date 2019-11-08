@@ -9,19 +9,25 @@ function [L_total, alpha_total] = approx_straight_ray_path_integration(altitude,
 %   Input units are km, degrees, and GHz.
 
 h_t = 100; % Height of atmosphere, in km
+d_h = 1; % Altitude step, in km
 
-h_vals = altitude:0.25:h_t; % list of height values from the altitude to space, in steps of 250 m
+
+i_vals = 0:round(((h_t-altitude)/d_h));
 
 alpha_vals = [];
 L_vals = [];
 
 R_v = 6.0518e3; % Radius of Venus in kilometers
 
-for h = h_vals
+theta_a_temp = deg2rad(180-theta_a);
+sin_theta_a_temp = sin(theta_a_temp);
+
+parfor i = i_vals
+    h = i*d_h + altitude;
     
-    B = rad2deg(asin((R_v + altitude)*sin(deg2rad(180-theta_a))/(R_v+h)));
-    phi = 180 - (180-theta_a) - B;
-    L = (R_v+h)*sin(deg2rad(phi))/sin(deg2rad(180-theta_a));
+    B = asin((R_v + altitude)*sin_theta_a_temp/(R_v+h));
+    phi = pi - theta_a_temp - B;
+    L = (R_v+h)*sin(phi)/sin_theta_a_temp;
     
     L_vals = [L_vals L];
     alpha_vals = [alpha_vals attenuation_total(freq, h)];
