@@ -1,4 +1,5 @@
 function a = OrbitalModel
+addpath("Functions")
 format longg
 format compact
 
@@ -14,7 +15,7 @@ max_bandwidth_percent = 0.05;
 lander_altitude = 0; %km
 lander_gain = 1.5; %dB
 orbiter_gain = 10; % dB
-transmit_power = 100; % Watts
+transmit_power = 15; % Watts
 noise_temperature = 27.3; %dB-K
 Eb_No = 1.05; % dB
 code_rate = 0.5; % idk
@@ -167,10 +168,10 @@ end
 toc
 
 OrbitalPeriod
-data_transmitted = total_data*orbits %Mbit
-data_transmitted_per_orbit = total_data %Mbit per orbit
-average_rate = total_data/(OrbitalPeriod) %Mbit per second
-peak_rate = max(data_rates) %Mbit per second
+disp("Total Data Transmitted: "+total_data*orbits+" Mbit ("+total_data*orbits/8192+" Gigabytes)")
+disp("Total Data per Orbit: "+total_data+" Mbit ("+total_data/8192+" Gigabytes)")
+disp("Average Data Rate: "+total_data/(OrbitalPeriod)+" Mbit/sec")
+disp("Maximum Data Rate: "+max(data_rates)+" Mbit/sec")
 disp("Percentage of time with link: "+(totalInCommsPoints/totalPoints)*100+"%")
 
 ax3 = subplot(2,1,2);
