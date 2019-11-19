@@ -43,7 +43,7 @@ deltaLatitudeAngleDeg = northSouthV/VenusCircumference*360;
 deltaLongitudeAngleDeg = eastWestV/VenusCircumference*360;
 
 
-orbits = 50; % Number of orbits (Lander is 3-10 ish, balloon is 400-500 ish (Balloon will take a LOOONNGGG time to process))
+orbits = 100; % Number of orbits (Lander is 3-10 ish, balloon is 400-500 ish (Balloon will take a LOOONNGGG time to process))
 orbitPoints = 500*orbits; % Number of points in an orbit
 totalPoints = orbitPoints; % Total number of points
 
@@ -146,7 +146,8 @@ subplot(2,1,1);
 set(gcf, 'Position',  [0, 20, 800, 620])
 hold on
 polar(linspace(0,2*pi,1000), linspace(VenusRadius,VenusRadius,1000),"g");
-polar(deg2rad(LatitudeAngleRange), (VenusRadius + lander_altitude*1000)*(cos(deg2rad(LongitudeAngleRange))), "ko")
+plot((VenusRadius + lander_altitude*1000)*cos(deg2rad(LongitudeAngleRange)).*cos(deg2rad(LatitudeAngleRange)), (VenusRadius + lander_altitude*1000)*sin(deg2rad(LatitudeAngleRange)), "ko")
+%polar(deg2rad(LatitudeAngleRange), (VenusRadius + lander_altitude*1000)*sqrt(.^2 + sin(deg2rad(LatitudeAngleRange)).^2), "ko")
 if ~isempty(AltitudeLink)
     p1 = polar(TrueAnomalyLink,AltitudeLink,"ro");
     p1.MarkerSize = 1;
