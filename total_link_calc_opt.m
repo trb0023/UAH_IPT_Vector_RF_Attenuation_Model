@@ -1,4 +1,4 @@
-function [data_rate] = total_link_calc(frequency, max_bandwidth, altitude, elevation_angle, altitude_of_orbiter, lander_gain, orbiter_gain, transmit_power, noise_temperature, Eb_No, code_rate, misclosses)
+function [data_rate] = total_link_calc_opt(frequency, max_bandwidth, altitude, elevation_angle, altitude_of_orbiter, lander_gain, orbiter_gain, transmit_power, noise_temperature, Eb_No, code_rate, misclosses)
 
 
 % frequency = 1; %GHz
@@ -33,15 +33,9 @@ fspl = 20*log10(L) + 20*log10(frequency) + 92.45;
 
 margin = @(bandwidth) link_calc_alt(bandwidth, Eb_No, code_rate, lander_gain, orbiter_gain, transmit_power, misclosses, attenuation, fspl, noise_temperature);
 
-%bandwidth = min(fzero(margin,[1e-20 1e20]), max_bandwidth); % MHz
+bandwidth = min(fzero(margin,[1e-20 1e20]), max_bandwidth); % MHz
 
-this_margin = margin(max_bandwidth);
-
-if(this_margin>0)
-    [~ , data_rate] = link_calc_alt(max_bandwidth, Eb_No, code_rate, lander_gain, orbiter_gain, transmit_power, misclosses, attenuation, fspl, noise_temperature);
-else
-    data_rate = 0;
-end
+[~ , data_rate] = link_calc_alt(bandwidth, Eb_No, code_rate, lander_gain, orbiter_gain, transmit_power, misclosses, attenuation, fspl, noise_temperature);
 
 end
 
